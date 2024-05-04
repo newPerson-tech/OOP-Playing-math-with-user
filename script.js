@@ -1,13 +1,19 @@
 class SuperMath {
-  // Method to get data from a user
+  constructor() {
+    // Valid mathematical operators
+    this.validOperators = ["+", "-", "*", "/", "%"];
+  }
+
+  // Method to get data form a user
   input() {
     const newX = parseFloat(prompt("Enter any number for X: "));
-    const newY = parseFloat(prompt("Enter any number for Y: "));
+    const newY = parseFloat(prompt("Enter any number for Y:"));
     let newOperator;
 
+    // Check if operator is valid
     do {
-      newOperator = prompt("Enter mathematical operator (+, -, *, /, %): ");
-    } while (!["+", "-", "*", "/", "%"].includes(newOperator)); // Check if operator is valid
+      newOperator = prompt("Choose mathematical operator (+, -, *, /, %):");
+    } while (!this.validOperators.includes(newOperator));
 
     return { X: newX, Y: newY, operator: newOperator }; // Returns new object
   }
@@ -17,7 +23,7 @@ class SuperMath {
     const { X, Y, operator } = obj;
 
     const confirmation = confirm(
-      `Do you want to do mathematical operation ${operator} on numbers ${X} and ${Y}?`
+      `Do you want to proceed with the mathematical operation ${operator} with the numbers ${X} and ${Y}?`
     );
 
     if (confirmation) {
@@ -33,6 +39,10 @@ class SuperMath {
           result = X * Y;
           break;
         case "/":
+          if (Y === 0) {
+            console.error("Cannot be divided by 0");
+            return;
+          }
           result = X / Y;
           break;
         case "%":
@@ -45,14 +55,13 @@ class SuperMath {
 
       console.log(`Result: ${X} ${operator} ${Y} = ${result}`);
     } else {
-      // Ask new data
+      // Ask for new data
       const newObj = this.input();
-      this.check(newObj); // Recursive function to do everything once again with new data
+      this.check(newObj);
     }
   }
 }
 
-const obj = { X: 12, Y: 3, operator: "/" };
-
 const p = new SuperMath();
-p.check(obj);
+const userInput = p.input();
+p.check(userInput);
